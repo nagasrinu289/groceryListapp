@@ -1,6 +1,8 @@
-import React from 'react'
+import React from 'react';
 import "./index.css";
+
 const AddItem = ({newItem , setNewItem,addItem}) => {
+
   const handelsubmit = (e)=>{
     e.preventDefault();
     addItem(newItem);
@@ -10,8 +12,9 @@ const AddItem = ({newItem , setNewItem,addItem}) => {
     <form onSubmit={handelsubmit}>
         <label htmlFor='addItem'>Add Item</label>
         <input
+        
         className='search'
-       
+      
         autoFocus
         id='addItem'
         type='text'
@@ -23,6 +26,7 @@ const AddItem = ({newItem , setNewItem,addItem}) => {
         <button
         type='submit'
         aria-label='Add Item'>submit
+        
         </button>
     </form>
   )

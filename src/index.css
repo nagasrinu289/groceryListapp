@@ -105,3 +105,10 @@ form {
   display: flex;
   align-items: center;
 }
+
+/* styles.css */
+.delete-icon {
+  color: lightcoral;
+  font-size: 25px;
+  /* Add more styles as needed */
+}

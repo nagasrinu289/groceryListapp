@@ -1,5 +1,6 @@
 import React from 'react'
 import { FaBeer } from 'react-icons/fa'
+import "./index.css"
 const ItemsList = ({items,handlecheck,handledelete}) => {
   return (
     <ul>
@@ -16,6 +17,7 @@ const ItemsList = ({items,handlecheck,handledelete}) => {
               onDoubleClick={()=>handlecheck(item.id)}
            >{item.item}</label>
            <FaBeer role='button' tabIndex={0} 
+             className='delete-icon'
                onClick={()=>{handledelete(item.id)}}
            />
           </li>

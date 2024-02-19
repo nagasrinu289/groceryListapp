@@ -20,6 +20,7 @@ const AddItem = ({newItem , setNewItem,addItem}) => {
         type='text'
         placeholder='Add Item'
         required
+        autoComplete='off'
         value={newItem}
         onChange={(e)=> setNewItem(e.target.value)}
         />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './index.css';
-const SearchItem = ({search,setsearch}) => {
+const SearchItem = ({search,setSearch}) => {
    
   return (
     <form  onSubmit={(e)=>e.preventDefault()}>
@@ -13,7 +13,7 @@ const SearchItem = ({search,setsearch}) => {
          role='searchbox'
          placeholder='Enter Item'
          value={search}
-         onChange={(e)=>setsearch(e.target.value)}
+         onChange={(e)=>setSearch(e.target.value)}
          >
          </input>
          

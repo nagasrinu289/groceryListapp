@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Fotter = ({len}) => {
+const Footer = ({len}) => {
   return (
     <footer>
         <p> Numer of items are {len===1 ? "1 only" : len}</p>
@@ -8,4 +8,4 @@ const Fotter = ({len}) => {
   )
 }
 
-export default Fotter
+export default Footer

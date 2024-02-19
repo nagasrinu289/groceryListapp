@@ -1,25 +1,9 @@
 {
-    "items": [
-      {
-        "id": 1,
-        "checked": false,
-        "item": "pizza"
-      },
-      {
-        "id": 2,
-        "checked": false,
-        "item": "milk"
-      },
-      {
-        "id": 3,
-        "checked": false,
-        "item": "sugar"
-      },
-      {
-        "id": "4",
-        "checked": false,
-        "item": "tea"
-      }
-    ]
-  }
-  
+  "items": [
+    {
+      "id": "1",
+      "checked": false,
+      "item": "sheshu"
+    }
+  ]
+}

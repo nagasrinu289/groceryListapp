@@ -1,87 +1,113 @@
 import './App.css';
 import Header from './Header';
 import Content from './Content';
-import Fotter from './Fotter';
-import { useState ,useEffect } from 'react';
+import Footer from './Footer'; // Corrected typo in import statement
+import { useState, useEffect } from 'react';
 import AddItem from './AddItem';
 import SearchItem from './SearchItem';
-function App() {
-  const API_URL = 'http://localhost:3030/items'
-  const [items,setItems] = useState(JSON.parse(localStorage.getItem("shoppinglist")) || []);
-  const [search,setsearch] = useState("");
-  const [fetchError,setFetchError] = useState(null);
-  const [loading,setLoading] = useState(true);
 
-  useEffect(()=>{
-    const fetchItems = async ()=>{
-      try{
-      const response = await fetch(API_URL);
-      if(!response.ok){
-        throw Error("can't get the items list...")
-      }
-      const listitems = await response.json();
-      setItems(listitems);
-      }catch(err){
+function App() {
+  const API_URL = 'http://localhost:3030/items';
+  const [items, setItems] = useState(JSON.parse(localStorage.getItem("shoppinglist")) || []);
+  const [search, setSearch] = useState("");
+  const [fetchError, setFetchError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+          throw Error("Can't get the items list...");
+        }
+        const listItems = await response.json();
+        setItems(listItems);
+      } catch (err) {
         setFetchError(err.message);
-      }finally{
+      } finally {
         setLoading(false);
       }
-    }
-    setTimeout(() => {
-      (async ()=> await fetchItems())()
-    }, 2000);
-  },[]);
-
-// useEffect(()=>{
-//   localStorage.setItem("shoppinglist",JSON.stringify(items));
-// },[items]);
-
-    const handlecheck = (id)=>{
-      console.log("checked by ~"+id);
-      const listitems = items.map((item)=>item.id === id ? {
-        ...item,checked:!item.checked}:item
-      );
-      setItems(listitems);
-    }
-    const handledelete = (id)=>{
-      console.log("deleted by "+id);
-      const listitems = items.filter((item)=> item.id !== id);
-      setItems(listitems);
-    }
-    const [newItem,setNewItem] = useState("");
-
-    const addItem = () => {
-      if (newItem.trim() !== "") {
-        const id = items.length ? items[items.length - 1].id + 1 : 1;
-        const myNewItem = { id, checked: false, item: newItem };
-        const listitems = [...items, myNewItem];
-        setItems(listitems);
-        setNewItem("");  
-      }
     };
-   
- 
+
+    setTimeout(() => {
+      (async () => await fetchItems())();
+    }, 1000);
+  }, []);
+
+  
+
+  const handleCheck = (id) => {
+    console.log("checked by ~" + id);
+    const listItems = items.map((item) => item.id === id ? { ...item, checked: !item.checked } : item);
+    setItems(listItems);
+    setTimeout(()=>handleDelete(id),2000)
+  }
+
+  const handleDelete = (id) => {
+    console.log("deleted by " + id);
+    const listItems = items.filter((item) => item.id !== id);
+    fetch(`${API_URL}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    setItems(listItems);
+  }
+
+  const [newItem, setNewItem] = useState("");
+
+  const addItem = () => {
+    if (newItem.trim() !== "") {
+      const id = items.length ? (parseInt(items[items.length - 1].id) + 1 ).toString(): "1";
+      const myNewItem = { id, checked: false, item: newItem };
+      const listItems = [...items, myNewItem];
+      setItems(listItems);
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(myNewItem),
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('POST request successful:', data);
+      })
+      .catch(error => {
+        console.error('Error during POST request:', error);
+      });
+      setNewItem("");
+    }
+  };
+
   return (
     <div className='App'>
-      <Header title="Groceries List"/>
-      <AddItem 
+      <Header title="Groceries List" />
+      <AddItem
         newItem={newItem}
         setNewItem={setNewItem}
-        addItem={addItem}      
+        addItem={addItem}
       />
-      <SearchItem search={search}
-      setsearch={setsearch}
+      <SearchItem
+        search={search}
+        setSearch={setSearch}
       />
       <main>
-        {loading && <p>loading items ...</p>}
-        {fetchError && <p style={{color:"red"}}>{`Error ${fetchError}`}</p>}
-      {!fetchError&& !loading && <Content items={items.filter(item => ((item.item).toLowerCase()).includes(
-      search.toLowerCase()))}
-        handlecheck={handlecheck}
-        handledelete={handledelete}      
-      />}
+        {loading && <p>Loading items...</p>}
+        {fetchError && <p style={{ color: "red" }}>{`Error ${fetchError}`}</p>}
+        {!fetchError && !loading && <Content
+          items={items.filter(item => item.item && item.item.toLowerCase().includes(search.toLowerCase()))}
+          handleCheck={handleCheck}
+          handleDelete={handleDelete}
+        />}
       </main>
-      {!loading  && !fetchError && <Fotter len={items.length} />}
+      {!loading && !fetchError && <Footer len={items.length} />}
     </div>
   );
 }

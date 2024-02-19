@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaBeer } from 'react-icons/fa'
 import "./index.css"
-const ItemsList = ({items,handlecheck,handledelete}) => {
+const ItemsList = ({items,handleCheck,handleDelete}) => {
   return (
     <ul>
         {items.map((item)=>(
@@ -9,16 +9,16 @@ const ItemsList = ({items,handlecheck,handledelete}) => {
            <input
            type='checkbox'
            id={`checkbox-${item.id}`}
-           onChange={()=>handlecheck(item.id)}
+           onChange={()=>handleCheck(item.id)}
            checked={item.checked} />
            <label
               htmlFor={`checkbox-${item.id}`}
               style={item.checked?{textDecoration: "line-through"}:null}
-              onDoubleClick={()=>handlecheck(item.id)}
+              onDoubleClick={()=>handleCheck(item.id)}
            >{item.item}</label>
            <FaBeer role='button' tabIndex={0} 
              className='delete-icon'
-               onClick={()=>{handledelete(item.id)}}
+               onClick={()=>{handleDelete(item.id)}}
            />
           </li>
         ))}

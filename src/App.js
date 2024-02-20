@@ -7,7 +7,7 @@ import AddItem from './AddItem';
 import SearchItem from './SearchItem';
 
 function App() {
-  const API_URL = 'http://localhost:3030/items';
+  const API_URL = 'https://server-rosy-pi.vercel.app/items';
   const [items, setItems] = useState(JSON.parse(localStorage.getItem("shoppinglist")) || []);
   const [search, setSearch] = useState("");
   const [fetchError, setFetchError] = useState(null);

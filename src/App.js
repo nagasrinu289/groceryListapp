@@ -20,10 +20,13 @@ function App() {
         if (!response.ok) {
           throw Error("Can't get the items list...");
         }
-        const listItems = await response.json();
+        let listItems = await response.json();
+        console.log(listItems);
+        // listItems = listItems.items
         setItems(listItems);
       } catch (err) {
         setFetchError(err.message);
+        console.log(err)
       } finally {
         setLoading(false);
       }

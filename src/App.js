@@ -14,30 +14,37 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-          throw Error("Can't get the items list...");
-        }
-        let listItems = await response.json();
-        console.log(listItems);
-        // listItems = listItems.items
-        setItems(listItems);
-      } catch (err) {
-        setFetchError(err.message);
-        console.log(err)
-      } finally {
-        setLoading(false);
-      }
-    };
+    const intervalId = setInterval(() => {
+      fetchItems(); // Fetch the updated items without reloading the page
+    }, 10000);
 
+    return () => clearInterval(intervalId);
+  }, []);
+
+
+  useEffect(() => {
     setTimeout(() => {
       (async () => await fetchItems())();
     }, 1000);
   }, []);
 
-  
+  const fetchItems = async () => {
+    try {
+      const response = await fetch(API_URL);
+      if (!response.ok) {
+        throw Error("Can't get the items list...");
+      }
+      let listItems = await response.json();
+      console.log(listItems);
+      // listItems = listItems.items
+      setItems(listItems);
+    } catch (err) {
+      setFetchError(err.message);
+      console.log(err)
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCheck = (id) => {
     console.log("checked by ~" + id);

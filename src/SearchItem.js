@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import './index.css';
 const SearchItem = ({search,setSearch}) => {
    

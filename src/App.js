@@ -14,15 +14,6 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      fetchItems(); // Fetch the updated items without reloading the page
-    }, 10000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-
-  useEffect(() => {
     setTimeout(() => {
       (async () => await fetchItems())();
     }, 1000);
@@ -48,10 +39,13 @@ function App() {
 
   const handleCheck = (id) => {
     console.log("checked by ~" + id);
-    const listItems = items.map((item) => item.id === id ? { ...item, checked: !item.checked } : item);
-    setItems(listItems);
-    setTimeout(()=>handleDelete(id),2000)
-  }
+    const updatedItems = items.map((item) =>
+      item.id === id ? { ...item, checked: !item.checked } : item
+    );
+
+    setItems(updatedItems);
+  };
+  
 
   const handleDelete = (id) => {
     console.log("deleted by " + id);
@@ -62,6 +56,7 @@ function App() {
         'Content-Type': 'application/json',
       },
     })
+    console.log(listItems);
     setItems(listItems);
   }
 
